@@ -67,9 +67,6 @@ class AutocompleteSystem {
                 }
                 if(!top.hash.isEmpty()){
                     for(char i : top.hash.keySet()){
-                        if(i == 'e'){
-                            int flag = 1;
-                        }
                         if(top.hash.get(i) != null)
                             qu.add(top.hash.get(i));
                     }
