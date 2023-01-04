@@ -1,0 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Solution {
+    
+    public static boolean isLeave(TreeNode root){
+        if(root != null && root.left == null && root.right == null)
+            return true;
+        return false;
+    }
+    public static void helper(TreeNode root, ArrayList<Integer> cur){
+        if(root.left != null){
+            if(isLeave(root.left)){
+                cur.add(root.left.val);
+                root.left = null;
+            }
+            else helper(root.left, cur);
+        }
+        if(root.right != null) {
+            if(isLeave(root.right)){
+                cur.add(root.right.val);
+                root.right = null;
+            }
+            else helper(root.right, cur);
+        }
+        return;
+    }
+
+    public static List<List<Integer>> findLeaves(TreeNode root) {
+        ArrayList<List<Integer>> res = new ArrayList<>();
+        TreeNode newRoot = new TreeNode(0, root, null);
+        while(isLeave(newRoot) == false){
+            ArrayList<Integer> cur = new ArrayList<>();
+            helper(newRoot, cur);
+            res.add(cur);
+        }
+        return res;
+    }
+}

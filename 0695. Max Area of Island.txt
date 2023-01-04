@@ -1,0 +1,35 @@
+class Solution {
+    static int helper(int[][] grid, boolean[][] visited, int x, int y){
+        if(x < 0 || x > grid.length - 1 || y < 0 || y > grid[0].length - 1 ||
+                visited[x][y] == false || grid[x][y] == 0) return 0;
+        else{
+            visited[x][y] = false;
+            int up = helper(grid, visited, x - 1, y);
+            int down = helper(grid, visited, x + 1, y);
+            int left = helper(grid, visited, x, y - 1);
+            int right = helper(grid, visited, x, y +1);
+            return 1 + up + down + left + right;
+        }
+    }
+
+    static int maxAreaOfIsland(int[][] grid) {
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        for(int i = 0; i < grid.length; i++)
+            for(int j = 0; j < grid[0].length; j++)
+                visited[i][j] = true;
+        List<Integer> maxes = new ArrayList<>();
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == 1){
+                    int now = helper(grid, visited, i, j);
+                    maxes.add(now);
+                }
+            }
+        }
+        if(maxes.size() == 0) return 0;
+        int max = maxes.get(0);
+        for(int i = 0; i < maxes.size(); i++)
+            if(maxes.get(i) > max) max = maxes.get(i);
+        return max;
+    }
+}

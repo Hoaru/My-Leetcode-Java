@@ -1,0 +1,31 @@
+class Solution {
+    public boolean isPalin(String a){
+        for(int i = 0, j = a.length() - 1; i < j; i++, j--)
+                if(a.charAt(i) != a.charAt(j)) return false;
+        return true;
+    }
+    
+    public void helper(String s, ArrayList<List<String>> res, ArrayList<String> cur, int index){
+        if(index > s.length() - 1){
+            res.add(cur);
+            return;
+        }
+        else{
+            for(int i = index + 1; i < s.length() + 1; i++){
+                String now = s.substring(index, i);
+                if(isPalin(now)){
+                    ArrayList<String> newCur = new ArrayList<>(cur);
+                    newCur.add(now);
+                    helper(s, res, newCur, i);
+                }
+            }
+        }
+    }
+    
+    public List<List<String>> partition(String s) {
+        ArrayList<List<String>> res = new ArrayList<>();
+        ArrayList<String> cur = new ArrayList<>();
+        helper(s, res, cur, 0);
+        return res;
+    }
+}

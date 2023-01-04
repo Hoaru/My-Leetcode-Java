@@ -1,0 +1,29 @@
+/*
+// Definition for Employee.
+class Employee {
+    public int id;
+    public int importance;
+    public List<Integer> subordinates;
+};
+*/
+
+class Solution {
+    public static Employee getEmployee(List<Employee> employees, int id){
+        for(Employee i : employees){
+            if( i.id == id) return i;
+        }
+        Employee x = new Employee(-1, 0, new ArrayList<>());
+        return x;
+    }
+
+    public static int getImportance(List<Employee> employees, int id) {
+        Employee staff = getEmployee(employees, id);
+        int imp = staff.importance;
+        if(staff.subordinates.size() == 0) return imp;
+        else{
+            for(int i : staff.subordinates)
+                imp += getImportance(employees, i);
+            return imp;
+        }
+    }
+}

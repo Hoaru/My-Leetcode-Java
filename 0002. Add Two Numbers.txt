@@ -1,0 +1,37 @@
+
+class Solution {
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int add1 = 0;
+        int sum = 0;
+        int flag1 = 1;
+        int flag2 = 1;
+        ListNode l = new ListNode();
+        ListNode curr = l;
+        ListNode n1 = l1;
+        ListNode n2 = l2;
+        while(flag1 == 1 || flag2 == 1 || add1 == 1){
+            sum += add1;
+            if(flag1 == 1){
+                sum += n1.val;
+                n1 = n1.next;
+                if(n1 == null) flag1 = 0;
+                else flag1 = 1;
+            }
+            if(flag2 == 1){
+                sum += n2.val;
+                n2 = n2.next;
+                if(n2 == null) flag2 = 0;
+                else flag2 = 1;
+            }
+            curr.val = sum % 10;
+            if(sum/10 == 1) add1 = 1;
+            else add1 = 0;
+            sum = 0;
+            if(flag1 == 1 || flag2 == 1 || add1 == 1){
+                curr.next = new ListNode();
+                curr = curr.next;
+            }
+        }
+        return l;
+    }
+}

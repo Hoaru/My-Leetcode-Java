@@ -1,0 +1,105 @@
+class TrieNode{
+    HashMap<Character, TrieNode> hash;
+    String word;
+    int times;
+    TrieNode(){
+        hash = new HashMap<>();
+        word = "";
+        times = 0;
+    }
+}
+
+class AutocompleteSystem {
+
+    String prefix;
+
+    TrieNode root;
+
+    public void buildTrieBranch(String sentences, int times){
+        TrieNode curr = root;
+        for(char c : sentences.toCharArray()){
+            if(!curr.hash.containsKey(c)){
+                curr.hash.put(c, new TrieNode());
+            }
+            curr = curr.hash.get(c);
+        }
+        curr.word = sentences;
+        curr.times = curr.times + times;
+        return;
+    }
+
+    public TrieNode getLast(String s){
+        TrieNode curr = root;
+        for(char c: s.toCharArray()){
+            if(!curr.hash.containsKey(c)) return null;
+            curr = curr.hash.get(c);
+        }
+        return curr;
+    }
+
+    public AutocompleteSystem(String[] sentences, int[] times) {
+        prefix = "";
+        root = new TrieNode();
+        int len = times.length;
+        for(int i = 0; i < len; i++){
+            buildTrieBranch(sentences[i], times[i]);
+        }
+    }
+
+    public List<String> input(char c) {
+        List<String> arr = new ArrayList<>();
+        HashMap<String, Integer> map = new HashMap<>();
+        if(c == '#') {
+            buildTrieBranch(prefix, 1);
+            prefix = "";
+            return arr;
+        }
+        prefix += c;
+        TrieNode curr = getLast(prefix);
+        if(curr == null) return arr;
+        else{
+            Queue<TrieNode> qu = new LinkedList<>();
+            qu.add(curr);
+            while(!qu.isEmpty()){
+                TrieNode top = qu.poll();
+                if(top.times != 0){
+                    map.put(top.word, top.times);
+                }
+                if(!top.hash.isEmpty()){
+                    for(char i : top.hash.keySet()){
+                        if(i == 'e'){
+                            int flag = 1;
+                        }
+                        if(top.hash.get(i) != null)
+                            qu.add(top.hash.get(i));
+                    }
+                }
+
+            }
+            ArrayList<Map.Entry<String, Integer>> sortMap = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+            Collections.sort(sortMap, new Comparator<Map.Entry<String, Integer>>(){
+                @Override
+                public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2){
+                    if(e2.getValue() - e1.getValue() > 0) return 1;
+                    else if((e2.getValue() - e1.getValue() < 0)) return -1;
+                    else{
+                        int cha = e1.getKey().compareTo(e2.getKey());
+                        if(cha > 0) return 1;
+                        else return -1;
+                    }
+                }
+            } );
+            if(sortMap.size() < 3){
+                for(int i = 0; i < sortMap.size(); i++){
+                    arr.add(sortMap.get(i).getKey());
+                }
+            }
+            else{
+                for(int i = 0; i < 3; i++){
+                    arr.add(sortMap.get(i).getKey());
+                }
+            }
+            return arr;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+class Solution {
+    public int findMin(int[] nums){
+        int len = nums.length;
+        int curr = nums[0];
+        for(int j = 1; j < len; j++){
+            int next = nums[j];
+            if(next < curr) return next;
+        }
+        return nums[0];
+    }
+}

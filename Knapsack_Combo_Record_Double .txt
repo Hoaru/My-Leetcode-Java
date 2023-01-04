@@ -1,0 +1,41 @@
+/*Given a set of candidate numbers (C) and a target number (T), find all unique
+combinations in C where the candidate numbers sums to T. All candidate numbers
+are unique. The same repeated number may be chosen from C unlimited number
+of times.
+*/
+import java.util.*;
+public class Main {
+    //打印路径问题，helper函数一般void，形参中加入结果
+    public static void helper(int[] candidates, int target, int index, ArrayList<ArrayList<Integer>> res, ArrayList<Integer> each){
+        if(target < 0) return;
+        else if(target == 0){
+            res.add(new ArrayList<Integer>(each));
+            return;
+        }
+        else{
+            for(int i = index; i < candidates.length; i++){
+                each.add(candidates[i]);
+                helper(candidates, target - candidates[i], i, res, each);
+                each.remove(each.size() - 1);
+                while(i < candidates.length - 1 && candidates[i] == candidates[i+1]) i+=1;
+            }
+        }
+    }
+    public static ArrayList<ArrayList<Integer>> knapsack(int[] candidates, int target){
+        Arrays.sort(candidates);
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> each = new ArrayList<>();
+        helper(candidates, target, 0, res, each);
+        return res;
+    }
+
+    public static void main(String[] args)
+    {
+        int[] candidates = {3,2,2,2,2,6,7};
+        int target = 7;
+        System.out.println(knapsack(candidates, target));
+        System.exit(0);
+        //System.out.println();
+    }
+}
+

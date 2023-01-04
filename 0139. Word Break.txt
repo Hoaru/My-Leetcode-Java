@@ -1,0 +1,24 @@
+class Solution {
+
+    public boolean find(String s, List<String> words){
+        for(String i : words){
+            if(i.equals(s)) return true;
+        }
+        return false;
+    }
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for(int i = 1; i < s.length() + 1; i++){
+            for(int j = 0; j < i; j++){
+                String new_s = s.substring(j, i);
+                if(dp[j] && find(new_s, wordDict)){
+                     dp[i] = true;
+                     break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+}

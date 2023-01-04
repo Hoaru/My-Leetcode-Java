@@ -1,0 +1,38 @@
+class Solution {
+
+    public static int getEdge(int[] sticks, int sides){
+        int sum = 0;
+        for(int i : sticks){
+            if(i < 0) return -1;
+            else sum += i;
+        }
+        if(sum % sides == 0) return sum / sides;
+        else return -1;
+    }
+
+    public static boolean helper(ArrayList<Integer> nums, int _target, int target, int index, int flag, int sides){
+        if(target == 0) return helper(new ArrayList<>(nums), _target, _target, 0, flag + 1, sides);
+        else if(flag == sides - 1) return true;
+        else if(target < 0 || nums.size() == 0 || index > nums.size() - 1)
+            return false;
+        else{
+            for(int i = index; i < nums.size(); i++){
+                ArrayList<Integer> newNums = new ArrayList<>(nums);
+                newNums.remove(i);
+                if(helper(newNums, _target, target - nums.get(i), i, flag, sides))
+                    return true;
+            }
+            return false;
+        }
+    }
+
+    static boolean makesquare(int[] matchsticks) {
+        Arrays.sort(matchsticks);
+        int target = getEdge(matchsticks, 4);
+        ArrayList<Integer> nums = new ArrayList<>();
+        for(int i : matchsticks) nums.add(i);
+        if(target == -1) return false;
+        else return helper(nums, target, target, 0, 0, 4);
+
+    }
+}

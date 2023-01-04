@@ -1,0 +1,22 @@
+class Solution {
+    public TreeNode buildTree(int [] pre,int [] in) {
+        List<Integer> pp = new ArrayList<>();
+        List<Integer> ii = new ArrayList<>();
+        //for(int i : pre){
+        for(int i = 0; i < pre.length; i++){
+            pp.add(pre[i]);
+            ii.add(in[i]);
+        }
+        return reBuild(pp, ii);
+    }
+    
+    public TreeNode reBuild(List<Integer> pp, List<Integer> ii){
+        if(ii.size() == 0) return null;
+        int rootVal = pp.remove(0);
+        TreeNode ob = new TreeNode(rootVal);
+        int rootPos = ii.indexOf(rootVal);
+        ob.left = reBuild(pp, ii.subList(0, rootPos));
+        ob.right = reBuild(pp, ii.subList(rootPos+1, ii.size()));
+        return ob; 
+    }
+}

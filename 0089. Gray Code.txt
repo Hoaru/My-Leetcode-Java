@@ -1,0 +1,30 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Main {
+
+    public static void helper(int n, List<Integer> res){
+        if(n == 0){
+            res.add(0);
+            return;
+        }
+        helper(n - 1, res);
+        for(int i = res.size() - 1; i > -1; i--){
+            res.add(res.get(i) + (int)Math.pow(2, n - 1));
+        }
+    }
+
+    public static List<Integer> grayCode(int n){
+        List<Integer> result = new ArrayList<>();
+        helper(n, result);
+        return result;
+    }
+
+    public static void main(String[] args){
+        int n = 3;
+        System.out.print(grayCode(n));
+    }
+}

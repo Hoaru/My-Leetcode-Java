@@ -1,0 +1,19 @@
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int[] res = new int[nums.length - k + 1];
+        LinkedList<Integer> qu = new LinkedList<>();
+        for(int i = 0; i < nums.length; i++){
+            //if the most left num do not exist in the sliding window, remove it
+            if(qu.size() > 0 && i - qu.peek() >= k)
+                qu.remove();
+            //while the most right value is lower than the new value, remove it
+            while(qu.size() > 0 && nums[qu.getLast()] < nums[i])
+                qu.removeLast();
+            qu.add(i);
+            //if first window is eatablished, start to record max value
+            if(i >= k - 1)
+                res[i - k + 1] = nums[qu.peek()];
+        }
+        return res;
+    }
+}

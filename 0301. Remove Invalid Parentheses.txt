@@ -1,0 +1,52 @@
+class Solution {
+
+    public boolean isValid(String s){
+        Stack<Character> letters = new Stack<>();
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c == '(') letters.push(c);
+            else if(c == ')'){
+                if(letters.isEmpty()) letters.push(c);
+                else{
+                    if(letters.peek() == '(') letters.pop();
+                    else letters.push(c);
+                }
+            }
+            else continue;
+        }
+        return letters.size() == 0 ? true : false;
+    }
+
+    public List<String> removeInvalidParentheses(String s) {
+        ArrayList<String> res = new ArrayList<>();
+        HashSet<String> hash = new HashSet<>();
+        HashSet<String> visited = new HashSet<>();
+        int max = 0;
+        if(isValid(s)){
+            res.add(s);
+            return res;
+        }
+        LinkedList<String> qu = new LinkedList<>();
+        qu.add(s);
+        while(!qu.isEmpty()){
+            String top = qu.poll();
+            if(isValid(top)){
+                if(top.length() >= max){
+                    max = top.length();
+                    hash.add(top);
+                }
+            }
+            for(int i = 0; i < top.length(); i++){
+                String new_s = top.substring(0, i) + top.substring(i + 1, top.length());
+                if(!visited.contains(new_s)){
+                    visited.add(new_s);
+                    qu.add(new_s);
+                }
+            }
+        }
+        for(String i : hash)
+            res.add(i);
+        if(res.isEmpty()) res.add("");
+        return res;
+    }
+}

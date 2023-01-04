@@ -1,0 +1,32 @@
+    // 在该题中，当前状态只与上一状态相关。
+    // 2维DP的解决方案是: 第i行的状态j取决于第i-1行的0~j
+    // 1维DP的状态j取决于状态0~j,若从左到右（从小到大）更新,则会出现重复计算问题;
+    // 若从右到左（从大到小）计算,可以保证DP数组由尾端向头部依次固定且不会出现二次计算问题
+
+    public static int knapsack_1d(int n, int w, int weights[], int[] values){
+        int[] dp = new int[w + 1];
+        for(int i = 0; i < n; i++){
+            int now_w = weights[i];
+            int now_v = values[i];
+            for(int j = w; j > 0; j--){
+                if(j - now_w >= 0)
+                    dp[j] = Math.max(dp[j-now_w] + now_v, dp[j]);
+            }
+        }
+        return dp[w];
+    }
+
+    public static int knapsack_2d(int n, int w, int weights[], int[] values){
+        int[][] dp = new int[n + 1][w + 1];
+        for(int i = 1; i < n+1; i++){
+            int now_w = weights[i-1];
+            int now_v = values[i-1];
+            for(int j = 1; j < w+1; j++){
+                if(j-now_w >= 0)
+                    dp[i][j] = Math.max(dp[i-1][j-now_w] + now_v, dp[i-1][j]);
+                else
+                    dp[i][j] = dp[i-1][j];
+            }
+        }
+        return dp[n][w];
+    }

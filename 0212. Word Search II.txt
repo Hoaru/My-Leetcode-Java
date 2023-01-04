@@ -1,0 +1,48 @@
+class TrieNode{
+    HashMap<Character, TrieNode> hash = new HashMap<>();
+    String word;
+}
+
+class Solution{
+
+    public TrieNode buildTrieTree(String[] words){
+        TrieNode root = new TrieNode();
+        for(String i : words){
+            TrieNode curr = root;
+            for(char c : i.toCharArray()){
+                if(!curr.hash.containsKey(c))
+                    curr.hash.put(c, new TrieNode());
+                curr = curr.hash.get(c);
+            }
+            curr.word = i;
+        }
+        return root;
+    }
+
+    public List<String> findWords(char[][] board, String[] words){
+        List<String> res_arr = new ArrayList<>();
+        HashSet<String> res_hash = new HashSet<>();
+        TrieNode root = buildTrieTree(words);
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                dfs(board, i, j, root, res_hash);
+            }
+        }
+        for(String i : res_hash)
+            res_arr.add(i);
+        return res_arr;
+    }
+
+    public void dfs(char[][] board, int i, int j, TrieNode root, HashSet<String> res){
+        char now = board[i][j];
+        if(now == '#' || !root.hash.containsKey(now)) return;
+        root = root.hash.get(now);
+        if(root.word != null) res.add(root.word);
+        board[i][j] = '#';
+        if(i > 0) dfs(board, i - 1, j, root, res);
+        if(j > 0) dfs(board, i, j - 1, root, res);
+        if(i < board.length - 1) dfs(board, i + 1, j, root, res);
+        if(j < board[0].length - 1) dfs(board, i, j + 1, root, res);
+        board[i][j] = now;
+    }
+}

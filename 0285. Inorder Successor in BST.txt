@@ -1,0 +1,22 @@
+class Solution {
+    public void inOrderTraverse(ArrayList<TreeNode>arr, TreeNode root){
+        if(root != null){
+            inOrderTraverse(arr, root.left);
+            arr.add(root);
+            inOrderTraverse(arr, root.right);
+        }
+    }
+
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        ArrayList<TreeNode> arr = new ArrayList<>();
+        inOrderTraverse(arr, root);
+        for(int i = 0; i < arr.size(); i++){
+            if(arr.get(i).equals(p)){
+                if(i == arr.size() - 1)
+                    return null;
+                else return arr.get(i+1);
+            }
+        }
+        return null;
+    }
+}

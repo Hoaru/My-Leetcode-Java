@@ -1,0 +1,47 @@
+/*Given a collection of numbers, nums, that might contain duplicates, 
+return all possible unique permutations in any order.
+For example,
+[1,2,1] have the following permutations:
+[1,2,1], [1,1,2], [2,1,1].
+*/
+
+import java.util.*;
+
+public class Main {
+    public static void helper(ArrayList<Integer> num, ArrayList<Integer> cur, ArrayList<List<Integer>> res){
+            if(num.size() == 0){
+                res.add(cur);
+                return;
+            }
+            else{
+                for(int i = 0; i < num.size(); i++){
+                    ArrayList<Integer> newCur = new ArrayList<>(cur);
+                    newCur.add(num.get(i));
+                    ArrayList<Integer> newNum = new ArrayList<>(num);
+                    newNum.remove(num.get(i));
+                    helper(newNum, newCur, res);
+                    while(i + 1 < num.size() && num.get(i + 1) == num.get(i)) i++;
+                }
+            }
+        }
+
+        public static List<List<Integer>> permute(int[] nums) {
+            ArrayList<List<Integer>> res = new ArrayList<>();
+            ArrayList<Integer> newCur = new ArrayList<>();
+            ArrayList<Integer> newNum = new ArrayList<>();
+            Arrays.sort(nums);
+            for(int i : nums) newNum.add(i);
+            helper(newNum, newCur, res);
+            return res;
+        }
+
+
+
+    public static void main(String[] args)
+    {
+        int[] nums = {1,2,1};
+        System.out.println(permute(nums));
+        System.exit(0);
+        //System.out.println();
+    }
+}

@@ -1,0 +1,40 @@
+class Solution {
+
+    public int BiSearch(int[] nums, int start, int end, int target){
+        if(nums.length == 0) return -1;
+        if(start >= end){
+            if(nums[start] == target)
+                return start;
+            else return -1;
+        }
+        int mid = (start + end) / 2;
+        if(nums[mid] == target) return mid;
+        else if(nums[mid] < target){
+            return BiSearch(nums, mid + 1, end, target);
+        }
+        else{
+            return BiSearch(nums, start, mid - 1, target);
+        }
+    }
+
+    public int[] searchRange(int[] nums, int target) {
+        int[] res= new int[2];
+        int start = 0, end = nums.length - 1;
+        res[0] = BiSearch(nums, start, end, target);
+        res[1] = res[0];
+        if(res[0] == -1){
+            return res;
+        }
+        for(int i = res[0]; i > -1; i--){
+            if(nums[i] == target)
+                res[0] = i;
+            else break;
+        }
+        for(int i = res[1]; i < nums.length; i++){
+            if(nums[i] == target)
+                res[1] = i;
+            else break;
+        }
+        return res;
+    }
+}

@@ -1,0 +1,51 @@
+class Solution {
+
+    int[] dr = new int[]{-1, -1, -1, 0, 0, 1, 1, 1};
+    int[] dc = new int[]{-1, 0, 1, -1, 1, -1, 0, 1};
+
+    public static boolean judge(int rmax, int cmax, int r, int c){
+        if(r > -1 && r < rmax && c > -1 && c < cmax)
+            return true;
+        return false;
+    }
+
+    public void dfs(char[][]board, int r, int c){
+        if(!judge(board.length, board[0].length, r, c) || board[r][c] != 'E')
+            return;
+        else{
+            int sum = 0;
+            for(int i = 0; i < 8; i++){
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+                if(judge(board.length, board[0].length, nr, nc)){
+                    if(board[nr][nc] == 'M')
+                        sum += 1;
+                }
+            }
+            if(sum == 0){
+                board[r][c] = 'B';
+                for(int i = 0; i < 8; i++){
+                    int nr = r + dr[i];
+                    int nc = c + dc[i];
+                    if(judge(board.length, board[0].length, nr, nc)){
+                        dfs(board, nr, nc);
+                    }
+                }
+            }
+            else{
+                board[r][c] = String.valueOf(sum).charAt(0);
+            }
+        }
+    }
+    
+    public char[][] updateBoard(char[][] board, int[] click) {
+        int r = click[0];
+        int c = click[1];
+        if(board[r][c] == 'M'){
+            board[r][c] = 'X';
+            return board;
+        }
+        dfs(board, r, c);
+        return board;
+    }
+}

@@ -1,0 +1,32 @@
+class Solution {
+
+    public boolean find(List<String> wordDict, String sub){
+        for(String i : wordDict){
+            if(i.equals(sub))
+                return true;
+        }
+        return false;
+    }
+
+    public void helper(String s, List<String> wordDict, String now, ArrayList<String> all){
+        if(s.length() == 0){
+            now = now.substring(0, now.length() - 1);
+            all.add(now);
+            return;
+        }
+        for(int i = 1; i <= s.length(); i++){
+            String sub = s.substring(0, i);
+            if(find(wordDict, sub)){
+                String news = s.substring(i, s.length());
+                String newnow = now + sub + " ";
+                helper(news, wordDict, newnow, all);
+            }
+        }
+    }
+
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        ArrayList<String> all = new ArrayList<>();
+        helper(s, wordDict, "", all);
+        return all;
+    }
+}

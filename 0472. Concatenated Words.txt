@@ -1,0 +1,63 @@
+import java.util.*;
+public class Main {
+
+    public static boolean findString(String[] words, String s){
+        for(int i = words.length - 1; i > -1; i--)
+            if(words[i].equals(s)) return true;
+        return false;
+    }
+
+    public static boolean helper(String[] words, String front, String end, int min, int sum) {
+        if(findString(words, front) == true) {
+            front ="";
+            sum += 1;
+        }
+        if(end.length() == 0){
+            if(sum >= 2 && front == "") return true;
+            else return false;
+        }
+        else if(front != "" && findString(words, front) == false) return false;
+        else if(end.length() < min) return false;
+
+        else{
+            for(int i = min; i <= end.length(); i++) {
+                String newFront = end.substring(0, i);
+                String newEnd = end.substring(i);
+                boolean temp = helper(words, newFront, newEnd, min, sum);
+                if(temp == true) return true;
+            }
+            return false;
+        }
+    }
+
+
+    public static List<String> findAllConcatenatedWordsInADict(String[] words) {
+        for(int i = 0; i < words.length; i++) {
+            for(int j = i + 1; j < words.length; j++){
+                if(words[j].length() > words[i].length()){
+                    String t = words[i];
+                    words[i] = words[j];
+                    words[j] = t;
+                }
+            }
+        }
+
+        int min = words[words.length - 1].length();
+        ArrayList<String> res = new ArrayList<>();
+        for(int i = 0; i < words.length; i++){
+            boolean cur = helper(words, "", words[i], min, 0);
+            if(cur == true) res.add(words[i]);
+        }
+        return res;
+    }
+
+
+
+    public static void main(String[] args)
+    {
+        String[] words = new String[]{"abc","a","b","ab"};
+        System.out.print(findAllConcatenatedWordsInADict(words));
+        System.exit(0);
+    }
+
+}

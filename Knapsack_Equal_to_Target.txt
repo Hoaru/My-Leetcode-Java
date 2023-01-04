@@ -1,0 +1,29 @@
+public boolean helper_1d(int[] nums, int tar){
+        boolean[] dp = new boolean[tar + 1];
+        dp[0] = true;
+        for(int i = 0; i < nums.length; i++){
+            int now = nums[i];
+            for(int j = tar; j > 0; j--){
+                if(j - now >= 0)
+                    dp[j] = dp[j] || dp[j-now];
+            }
+        }
+        return dp[tar];
+    }
+
+    public boolean helper_2d(int[] nums, int tar){
+        boolean[][] dp = new boolean[nums.length + 1][tar + 1];
+        for(int i = 0; i < nums.length + 1; i++)
+            dp[i][0] = true;
+        for(int i = 1; i < nums.length + 1; i++){
+            int now = nums[i - 1];
+            for(int j = 1; j < tar + 1; j++){
+                if(j - now >= 0){
+                    dp[i][j] = dp[i - 1][j - now] || dp[i - 1][j];
+                }
+                else
+                    dp[i][j] = dp[i - 1][j];
+            }
+        }
+        return dp[nums.length][tar];
+    }

@@ -1,0 +1,124 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+class NestedInteger {
+    public List<NestedInteger> list;
+    public Integer num;
+    public boolean isinteger;
+    public NestedInteger() {
+        list = null;
+        isinteger = true;
+    }
+    public NestedInteger(int value) {
+        num = value;
+        isinteger = true;
+    }
+    // return true if this NestedInteger holds a single integer, rather than a nested list.
+    public boolean isInteger() {
+        return isinteger;
+    }
+    // return the single integer that this NestedInteger holds, if it holds a single integer
+    // Return null if this NestedInteger holds a nested list
+    public Integer getInteger() {
+        if (isinteger)
+            return num;
+        else
+            return null;
+    }
+    public void setIntger(int value) {
+        if (isinteger)
+            num = value;
+    }
+    public void add(NestedInteger ni) {
+        isinteger = false;
+        if (list == null)
+            list = new ArrayList<NestedInteger>();
+        list.add(ni);
+    }
+    // return the nested list that this NestedInteger holds, if it holds a nested list
+    // Return null if this NestedInteger holds a single integer
+    public List<NestedInteger> getList() {
+        if (isinteger)
+            return null;
+        else
+            return this.list;
+    }
+}
+
+public class Main {
+
+    static int weight(List<NestedInteger> nestedList, int max){
+        int sum = 0;
+        for(NestedInteger i: nestedList){
+            if(i.isInteger())
+                sum += i.getInteger() * max;
+            else
+                sum += weight(i.getList(), max - 1);
+        }
+        return sum;
+    }
+    static int maxDepth(List<NestedInteger> nestedList) {
+        int max = 0;
+        int dep = 0;
+        for(NestedInteger i : nestedList){
+            if(i.isInteger())
+                dep = 1;
+            else
+                dep = 1 + maxDepth(i.getList());
+            if(dep > max) max = dep;
+        }
+        return max;
+    }
+
+    static int depthSumInverse(List<NestedInteger> nestedList) {
+        int max = maxDepth(nestedList);
+        return weight(nestedList, max);
+    }
+    /******************************结束写代码******************************/
+    static List<NestedInteger> loadData(String text) {
+        Stack<NestedInteger> stk = new Stack<NestedInteger>();
+        Stack<Integer> nums = new Stack<Integer>();
+        nums.push(0);
+        int index = 0;
+        while (index < text.length()) {
+            if (text.charAt(index) == '[')
+                nums.push(0);
+            else if (text.charAt(index) == ']') {
+                NestedInteger ni = new NestedInteger();
+                Integer n = nums.pop();
+                Stack<NestedInteger> tmp = new Stack<NestedInteger>();
+                while (n-- > 0)
+                    tmp.push(stk.pop());
+                while (!tmp.empty())
+                    ni.add(tmp.pop());
+                stk.push(ni);
+                int number = nums.pop();
+                nums.push(++number);
+            }
+            else if (text.charAt(index) == '-' || (text.charAt(index) >= '0' && text.charAt(index) <= '9')) {
+                int beginIndex = index++;
+                while (text.charAt(index) >= '0' && text.charAt(index) <= '9')
+                    index++;
+                NestedInteger tmp = new NestedInteger(Integer.parseInt(text.substring(beginIndex, index)));
+                stk.push(tmp);
+                int number = nums.pop();
+                nums.push(++number);
+                index--;
+            }
+            index++;
+        }
+        return stk.pop().getList();
+    }
+
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        String text = in.nextLine().trim();
+        List<NestedInteger> nestedList = loadData(text);
+
+        int res = depthSumInverse(nestedList);
+        System.out.println(String.valueOf(res));
+    }
+}

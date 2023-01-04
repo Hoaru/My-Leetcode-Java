@@ -1,0 +1,45 @@
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        TreeMap<Integer, Integer> tree = new TreeMap<>();
+        for(int[] i: intervals){
+            if(tree.containsKey(i[0])){
+                if(i[1] > tree.get(i[0]))
+                    tree.put(i[0], i[1]);
+            }
+            else tree.put(i[0], i[1]);
+        }
+        if(tree.size() == 1){
+            int[][] res = new int[1][2];
+            res[0][0] = tree.firstKey();
+            res[0][1] = tree.get(tree.firstKey());
+            return res;
+        }
+        ArrayList<List<Integer>> arr = new ArrayList<>();
+        for(int i : tree.keySet()){
+            arr.add(Arrays.asList(i, tree.get(i)));
+        }
+        for(int i = 1; i < arr.size(); ){
+            int lastEnd = arr.get(i - 1).get(1);
+            int currBeg = arr.get(i).get(0);
+            int currEnd = arr.get(i).get(1);
+            if(currEnd <= lastEnd){
+                arr.remove(i);
+            }
+            else if(currBeg <= lastEnd && lastEnd <= currEnd){
+                arr.get(i-1).set(1, currEnd);
+                arr.remove(i);
+            }
+            else{
+                i++;
+            }
+        }
+        int[][] res = new int[arr.size()][2];
+        int index = 0;
+        for(List<Integer> i : arr){
+            res[index][0] = i.get(0);
+            res[index][1] = i.get(1);
+            index++;
+        }
+        return res;
+    }
+}

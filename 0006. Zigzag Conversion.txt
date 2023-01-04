@@ -1,0 +1,23 @@
+class Solution {
+    public static String convert(String s, int numRows) {
+        if(s.length() <= 1 || numRows == 1) return s;
+        int unit = 2 * numRows - 2;
+        ArrayList<StringBuilder> bu = new ArrayList<>();
+        for(int i = 0; i < numRows; i++){
+            StringBuilder e = new StringBuilder();
+            e.append("");
+            bu.add(e);
+        }
+        for(int j = 0; j < s.length(); j++){
+            char now = s.charAt(j);
+            int num = j % unit;
+            if(num > unit / 2) num = unit - num;
+            bu.get(num).append(now);
+        }
+        StringBuilder res = new StringBuilder();
+        for(StringBuilder e : bu){
+            res.append(e.toString());
+        }
+        return res.toString();
+    }
+}

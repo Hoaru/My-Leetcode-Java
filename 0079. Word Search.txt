@@ -1,0 +1,41 @@
+class Solution {
+    public boolean helper(char[][]board, boolean[][] visited, ArrayList<Character> letters, int i, int j){
+        if(letters.size() == 0) return true;
+        else if(i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1 || 
+                visited[i][j] == true || board[i][j] != letters.get(0))
+            return false;
+        else{
+            visited[i][j] = true;
+            ArrayList<Character> newLetters = new ArrayList<>(letters);
+            newLetters.remove(0);
+            boolean res = helper(board, visited, newLetters, i - 1, j) ||
+                          helper(board, visited, newLetters, i + 1, j) ||
+                          helper(board, visited, newLetters, i, j - 1) ||
+                          helper(board, visited, newLetters, i, j + 1);
+            if(res == false){
+                visited[i][j] = false;
+                return false;
+            }
+            else return true;
+        }
+    }
+    
+    public boolean exist(char[][] board, String word) {
+        boolean[][] visited = new boolean[board.length][board[0].length];
+        for(int i = 0; i < visited.length; i++)
+            Arrays.fill(visited[i], false);
+        
+        boolean res = false;
+                
+        ArrayList<Character> letters = new ArrayList<>();
+        for(int i = 0; i < word.length(); i++)
+            letters.add(word.charAt(i));
+        
+        for(int i = 0; i < board.length; i++)
+            for(int j = 0; j < board[0].length; j++){
+                res = helper(board, visited, letters, i, j);
+                if(res == true) return true;
+            }
+        return false;
+    }
+}
