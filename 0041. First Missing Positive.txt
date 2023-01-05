@@ -1,0 +1,15 @@
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        TreeSet<Integer> tree = new TreeSet<>();
+        for(int i : nums){
+            if(i > 0) tree.add(i);
+        }
+        if(!tree.contains(1)) return 1;
+        int res = 1;
+        for(int i : tree){
+            if(i == res) res++;
+            else return res;
+        }
+        return res;
+    }
+}
