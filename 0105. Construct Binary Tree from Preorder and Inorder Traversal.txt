@@ -1,22 +1,26 @@
 class Solution {
-    public TreeNode buildTree(int [] pre,int [] in) {
-        List<Integer> pp = new ArrayList<>();
-        List<Integer> ii = new ArrayList<>();
-        //for(int i : pre){
-        for(int i = 0; i < pre.length; i++){
-            pp.add(pre[i]);
-            ii.add(in[i]);
-        }
-        return reBuild(pp, ii);
-    }
     
-    public TreeNode reBuild(List<Integer> pp, List<Integer> ii){
-        if(ii.size() == 0) return null;
-        int rootVal = pp.remove(0);
-        TreeNode ob = new TreeNode(rootVal);
-        int rootPos = ii.indexOf(rootVal);
-        ob.left = reBuild(pp, ii.subList(0, rootPos));
-        ob.right = reBuild(pp, ii.subList(rootPos+1, ii.size()));
-        return ob; 
+    public TreeNode buildTree(int[] pre, int [] in) {
+        HashMap<Integer, Integer> hash = new HashMap<>();
+        for(int i = 0; i < in.length; i++) hash.put(in[i], i);
+        int[] preIndex = new int[]{0};
+        return helper(hash, pre, in, preIndex, 0, in.length - 1);
     }
+
+    public TreeNode helper(HashMap<Integer, Integer> hash, int[] pre, int[] in, int[] preIndex, int is, int ie){
+        if(preIndex[0] == pre.length || is > ie) return null;
+        else if(is == ie){
+            preIndex[0]++;
+            TreeNode root = new TreeNode(in[is]);
+            return root;
+        }
+        else{
+            int rootVal = pre[preIndex[0]++];
+            TreeNode root = new TreeNode(rootVal);
+            int pos = hash.get(rootVal);
+            root.left = helper(hash, pre, in, preIndex, is, pos - 1);
+            root.right = helper(hash, pre, in, preIndex, pos + 1, ie);
+            return root;
+        }
+    } 
 }
