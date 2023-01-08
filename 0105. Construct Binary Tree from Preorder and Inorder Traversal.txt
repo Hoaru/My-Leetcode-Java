@@ -2,25 +2,24 @@ class Solution {
     
     public TreeNode buildTree(int[] pre, int [] in) {
         HashMap<Integer, Integer> hash = new HashMap<>();
-        for(int i = 0; i < in.length; i++) hash.put(in[i], i);
-        int[] preIndex = new int[]{0};
-        return helper(hash, pre, in, preIndex, 0, in.length - 1);
+        for(int i = 0; i < in.length; i++)
+            hash.put(in[i], i);
+        return helper(hash, in, pre, new int[]{0}, 0, in.length - 1);
     }
 
-    public TreeNode helper(HashMap<Integer, Integer> hash, int[] pre, int[] in, int[] preIndex, int is, int ie){
-        if(preIndex[0] == pre.length || is > ie) return null;
+    public TreeNode helper(HashMap<Integer, Integer> hash, int[] in, int[] pre, int[] pi, int is, int ie){
+        if(is > ie || pi[0] == in.length) return null;
         else if(is == ie){
-            preIndex[0]++;
-            TreeNode root = new TreeNode(in[is]);
-            return root;
+            pi[0]++;
+            return new TreeNode(in[is]);
         }
         else{
-            int rootVal = pre[preIndex[0]++];
+            int rootVal = pre[pi[0]++];
             TreeNode root = new TreeNode(rootVal);
             int pos = hash.get(rootVal);
-            root.left = helper(hash, pre, in, preIndex, is, pos - 1);
-            root.right = helper(hash, pre, in, preIndex, pos + 1, ie);
+            root.left = helper(hash, in, pre, pi, is, pos - 1);
+            root.right = helper(hash, in, pre, pi, pos + 1, ie);
             return root;
         }
-    } 
+    }
 }
