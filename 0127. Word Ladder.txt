@@ -2,33 +2,40 @@ class Solution {
     public boolean trans(String s1, String s2){
         if(s1.length() != s2.length()) return false;
         int sum = 0;
-        for(int i = 0; i < s1.length(); i++)
-            if(s1.charAt(i) != s2.charAt(i)) sum += 1;
-        return sum == 1 ? true : false;
+        for(int i = 0; i < s1.length(); i++){
+            if(s1.charAt(i) != s2.charAt(i))
+                sum += 1;
+            if(sum == 2) return false;
+        }
+        return true;
     }
     
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        HashSet<String> words = new HashSet<>();
-        for(String i : wordList) words.add(i);
+        int res = 1;
         LinkedList<String> qu = new LinkedList<>();
         qu.add(beginWord);
-        int dep = 1;
         while(!qu.isEmpty()){
-            LinkedList<String> new_qu = new LinkedList<>();
+            LinkedList<String> newQu = new LinkedList<>();
+            boolean flag = false;
             while(!qu.isEmpty()){
                 String top = qu.poll();
                 if(top.equals(endWord))
-                    return dep;
+                    return res;
                 for(int i = 0; i < wordList.size();){
                     if(trans(top, wordList.get(i))){
-                        new_qu.add(wordList.get(i));
+                        newQu.add(wordList.get(i));
                         wordList.remove(i);
+                        flag = true;
                     }
                     else i++;
                 }
             }
-            dep += 1;
-            qu = new_qu;
+            if(flag){
+                res += 1;
+                qu = newQu;
+            }
+            else return 0;
+            
         }
         return 0;
     }
