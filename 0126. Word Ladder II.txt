@@ -1,0 +1,61 @@
+class Solution {
+    
+    public boolean trans(String s1, String s2){
+        if(s1.length() != s2.length()) return false;
+        int sum = 0;
+        for(int i = 0; i < s1.length(); i++){
+            if(s1.charAt(i) != s2.charAt(i)){
+                sum += 1;
+                if(sum == 2) return false;
+            }
+        }
+        return true;
+    }
+
+    public void helper(String begin, String end, HashSet<String> set, ArrayList<List<String>> res){
+        LinkedList<List<String>> qu = new LinkedList<>();
+        qu.add(Arrays.asList(begin));
+        while(!qu.isEmpty()){
+            LinkedList<List<String>> newQu = new LinkedList<>();
+            HashSet<String> newSet = new HashSet<>(set);
+            boolean flag = false;
+            while(!qu.isEmpty()){
+                List<String> top = qu.poll();
+                if(top.get(top.size() - 1).equals(end)){
+                    res.add(top);
+                    while(!qu.isEmpty()){
+                        List<String> nextTop = qu.poll();
+                        if(nextTop.get(nextTop.size() - 1).equals(end))
+                            res.add(nextTop);
+                    }
+                    return;
+                }
+                String curr = top.get(top.size() - 1);
+                for(String i : set){
+                    if(trans(curr, i)){
+                        flag = true;
+                        List<String> newTop = new ArrayList<>(top);
+                        newTop.add(i);
+                        newQu.add(newTop);
+                        newSet.remove(i);
+                    }
+                }
+            }
+            if(!flag) return;
+            else{
+                qu = newQu;
+                set = newSet;
+            }
+        }
+        return;
+    }
+    
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        ArrayList<List<String>> res = new ArrayList<>();
+        HashSet<String> set = new HashSet<>();
+        set.addAll(wordList);
+        set.remove(beginWord);
+        helper(beginWord, endWord, set, res);
+        return res;
+    }
+}
