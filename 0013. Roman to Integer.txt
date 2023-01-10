@@ -1,0 +1,71 @@
+class Solution {
+    public int romanToInt(String s) {
+        if(s == "") return 0;
+        HashMap<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+        boolean flag = false;
+        int sum = map.get(s.charAt(0));
+        int len = s.length();
+        if(len == 1) return sum;
+        for(int i = 1; i < len; i++){
+            char last = s.charAt(i - 1);
+            char now = s.charAt(i);
+            if(flag){
+                sum += map.get(now);
+                flag = false;
+                continue;
+            }
+            else{
+                if(last == 'I'){
+                    if(now == 'V'){
+                        sum += 3;
+                        flag = true;
+                    }
+                    else if(now == 'X'){
+                        sum += 8;
+                        flag = true;
+                    }
+                    else{
+                        sum += map.get(now);
+                    }    
+                }
+                else if(last == 'X'){
+                    if(now == 'L'){
+                        sum += 30;
+                        flag = true;
+                    }
+                    else if(now == 'C'){
+                        sum += 80;
+                        flag = true;
+                    }
+                    else{
+                        sum += map.get(now);
+                    }
+                }
+                else if(last == 'C'){
+                    if(now == 'D'){
+                        sum += 300;
+                        flag = true;
+                    }
+                    else if(now == 'M'){
+                        sum += 800;
+                        flag = true;
+                    }
+                    else{
+                        sum += map.get(now);
+                    }
+                }
+                else{
+                    sum += map.get(now);
+                }
+            }
+        }
+        return sum;
+    }
+}
