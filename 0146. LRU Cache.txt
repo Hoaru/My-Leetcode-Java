@@ -1,0 +1,24 @@
+class LRUCache {
+
+    public int cap;
+
+    public LinkedHashMap<Integer, Integer> cache;
+
+    public LRUCache(int capacity) {
+        cap = capacity;
+        cache = new LinkedHashMap<>(cap, 0.75f, true){
+            @Override
+            public boolean removeEldestEntry(Map.Entry entry){
+                return cache.size() > cap;
+            }
+        };
+    }
+    
+    public int get(int key) {
+        return cache.getOrDefault(key, -1);
+    }
+    
+    public void put(int key, int value) {
+        cache.put(key, value);
+    }
+}

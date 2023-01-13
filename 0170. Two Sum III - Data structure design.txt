@@ -1,0 +1,26 @@
+class TwoSum {
+    ArrayList<Integer> arr;
+
+    public TwoSum() {
+        arr = new ArrayList<>();
+    }
+    
+    public void add(int number) {
+        arr.add(number);
+    }
+    
+    public boolean find(int value) {
+        if(arr.size() <= 1) return false;
+        else{
+            HashSet<Integer> hash = new HashSet<>();
+            hash.add(value - arr.get(0));
+            for(int i = 1; i < arr.size(); i++){
+                if(hash.contains(arr.get(i)))
+                    return true;
+                else
+                    hash.add(value - arr.get(i));
+            }
+            return false;
+        }
+    }
+}

@@ -1,0 +1,21 @@
+class Solution {
+    public int numDecodings(String s) {
+        int len = s.length();
+        if(len == 0) return 0;
+        if(len == 1){
+            if(s.equals("0")) return 0;
+            return 1;
+        }
+        int[] dp = new int[len + 1];
+        dp[0] = 1;
+        if(s.charAt(0) == '0') return 0;
+        dp[1] = 1;
+        for(int i = 2; i < len + 1; i++){
+            int last1digits = Integer.valueOf(s.substring(i - 1, i));
+            int last2digits = Integer.valueOf(s.substring(i - 2, i));
+            if(1 <= last1digits && last1digits <= 9) dp[i] += dp[i - 1];
+            if(10 <= last2digits && last2digits <= 26) dp[i] += dp[i - 2];
+        }
+        return dp[len];
+    }
+}

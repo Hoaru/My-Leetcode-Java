@@ -1,0 +1,22 @@
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        int len = 0;
+        if(head == null) return null;
+        ListNode root = new ListNode(-1);
+        root.next = head;
+        ListNode curr = root;
+        while(curr != null){
+            curr = curr.next;
+            len++;
+        }
+        int index = len - n + 1;
+        int i = 0;
+        curr = root;
+        while(i != index - 2){
+            curr = curr.next;
+            i++;
+        }
+        curr.next = curr.next.next;
+        return root.next;
+    }
+}
