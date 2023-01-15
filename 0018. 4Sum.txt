@@ -1,34 +1,40 @@
 class Solution {
-    public List<List<Integer>> fourSum(int[] nums, int target) {
-        Arrays.sort(nums);
+    public static List<List<Integer>> fourSum(int[] nums, int target) {
         List<List<Integer>> res = new ArrayList<>();
-        HashSet<List<Integer>> resSet = new HashSet<>();
-        if(nums.length < 4) return res;
-        List<Integer> all = new ArrayList<>();
-        for(int i: nums) all.add(i);
-        for(int i = 0; i < nums.length - 3; i++)
-            helper(resSet, all.subList((i), all.size()), new ArrayList<Integer>(), target);
-        res.addAll(resSet);
-        return res;
-    }
-
-    public void helper(HashSet<List<Integer>> res, List<Integer> all, List<Integer> curr, int target){
-        int space = 4 - curr.size();
-        if(space == 0){
-            if(target == 0)
-                res.add(new ArrayList<>(curr));
-            return;
-        }
-        else if(all.size() < space)
-            return;
-        else{
-            for(int i = 0; i < all.size() - space + 1; i++){
-                int now = all.get(i);
-                curr.add(now);
-                helper(res, all.subList(i + 1, all.size()), curr, target - now);
-                curr.remove(curr.size() - 1);
+        int left;
+        int right;
+        int longIntMax = Integer.MAX_VALUE;
+        int longIntMin = Integer.MIN_VALUE;
+        Arrays.sort(nums);
+        for(int i = 0; i < nums.length - 3; i++){
+            if(i > 0 && nums[i] == nums[i - 1]) continue;
+            for(int j = i + 1; j < nums.length - 2; j++){
+                if(j > i + 1 && nums[j] == nums[j - 1]) continue;
+                left = j + 1;
+                right = nums.length - 1;
+                while(left < right){
+                    long sumLong = (long)nums[i] + (long)nums[j] + (long)nums[left] + (long)nums[right];
+                    if(sumLong > longIntMax){
+                        right --;
+                        continue;
+                    }
+                    if(sumLong < longIntMin){
+                        left ++;
+                        continue;
+                    }
+                    int sum = (int)sumLong;
+                    if(sum > target) right--;
+                    else if(sum < target) left++;
+                    else{
+                        res.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                        while(left < right && nums[left] == nums[left + 1]) left++;
+                        while(left < right && nums[right] == nums[right - 1]) right--;
+                        left ++;
+                        right --;
+                    }
+                }
             }
-            return;
         }
+        return res;
     }
 }
