@@ -1,0 +1,75 @@
+class Solution {
+    public String intToRoman(int num) {
+        StringBuilder sb = new StringBuilder();
+        if(num >= 1000){
+            int sum1000 = num / 1000;
+            num -= 1000 * sum1000;
+            while(sum1000 != 0){
+                sb.append("M");
+                sum1000 --;
+            }
+        }
+        if(num >= 900){
+            sb.append("CM");
+            num -= 900;
+        }
+
+        if(num >= 500){
+            sb.append("D");
+            num -= 500;
+        }
+        if(num >= 400){
+            sb.append("CD");
+            num -= 400;
+        }
+
+        if(num >= 100){
+            int sum100 = num / 100;
+            num -= 100 * sum100;
+            while(sum100 != 0){
+                sb.append("C");
+                sum100 --;
+            }
+        }
+        if(num >= 90){
+            sb.append("XC");
+            num -= 90;
+        }
+
+        if(num >= 50){
+            sb.append("L");
+            num -= 50;
+        }   
+        if(num >= 40){
+            sb.append("XL");
+            num -= 40;
+        }
+
+        if(num >= 10){
+            int sum10 = num / 10;
+            num -= sum10 * 10;
+            while(sum10 != 0){
+                sb.append("X");
+                sum10 --;
+            }
+        }   
+        if(num == 9){
+            sb.append("IX");
+            return sb.toString();
+        }
+
+        if(num >= 5){
+            sb.append("V");
+            num -= 5;
+        }   
+        if(num == 4){
+            sb.append("IV");
+            return sb.toString();
+        }
+
+        for(int i = 0; i < num; i++){
+            sb.append("I");
+        }
+        return sb.toString();
+    }
+}
