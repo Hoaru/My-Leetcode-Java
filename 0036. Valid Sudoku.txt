@@ -1,0 +1,43 @@
+class Solution {
+
+    public boolean matrix9(char[][] board, int is, int ie, int js, int je){
+        HashSet<Character> set = new HashSet<>();
+        for(int i = is; i < ie; i++){
+            for(int j = js; j < je; j++){
+                if(board[i][j] == '.') continue;
+                else if(set.contains(board[i][j])) return false;
+                else set.add(board[i][j]);
+            }
+        }
+        return true;
+    }
+
+    public boolean isValidSudoku(char[][] board) {
+        HashSet<Character> set;
+        //hang
+        for(int i = 0; i < 9; i++){
+            set = new HashSet<>();
+            for(int j = 0; j < 9; j++){
+                if(board[i][j] == '.') continue;
+                if(set.contains(board[i][j])) return false;
+                else set.add(board[i][j]);
+            }
+        }
+        //lie
+        for(int j = 0; j < 9; j++){
+            set = new HashSet<>();
+            for(int i = 0; i < 9; i++){
+                if(board[i][j] == '.') continue;
+                if(set.contains(board[i][j])) return false;
+                else set.add(board[i][j]);
+            }
+        }
+        //3*3
+        for(int i = 0; i < 9; i += 3){
+            for(int j = 0; j < 9; j += 3){
+                if(!matrix9(board, i, i + 3, j, j + 3)) return false;
+            }
+        }
+        return true;
+    }
+}

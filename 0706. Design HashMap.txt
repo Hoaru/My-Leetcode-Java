@@ -1,0 +1,37 @@
+class MyHashMap {
+    ArrayList<Integer> keys;
+    ArrayList<Integer> vals;
+
+    public MyHashMap() {
+        keys = new ArrayList<>();
+        vals = new ArrayList<>();
+    }
+
+    public void put(int key, int value) {
+        if(keys.contains(key)){
+            int i = keys.indexOf(key);
+            vals.set(i, value);
+        }
+        else{
+            keys.add(key);
+            vals.add(value);
+        }
+    }
+
+    public int get(int key) {
+        if(keys.contains(key)){
+            int i = keys.indexOf(key);
+            return vals.get(i);
+        }
+        else return -1;
+    }
+
+    public void remove(int key) {
+        if(keys.contains(key)){
+            int i = keys.indexOf(key);
+            keys.remove(i);
+            vals.remove(i);
+        }
+        else return;
+    }
+}
