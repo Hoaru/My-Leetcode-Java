@@ -1,0 +1,31 @@
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode root = new ListNode(0);
+        ListNode curr = root;
+        LinkedList<ListNode> qu = new LinkedList<>();
+        for(ListNode i: lists){
+            if(i != null)
+                qu.add(i);
+        }
+        while(!qu.isEmpty()){
+            ListNode minNode = qu.poll();
+            int min = minNode.val;
+            LinkedList<ListNode> newQu = new LinkedList<>();
+            while(!qu.isEmpty()){
+                ListNode top = qu.poll();
+                if(top.val < min){
+                    newQu.add(minNode);
+                    min = top.val;
+                    minNode = top;
+                }
+                else newQu.add(top);
+            }
+            curr.next = minNode;
+            curr = curr.next;
+            if(minNode.next != null)
+                newQu.add(minNode.next);
+            qu = newQu;  
+        }
+        return root.next;
+    }
+}
