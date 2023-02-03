@@ -1,0 +1,45 @@
+class Solution {
+    List<List<String>> res = new ArrayList<>();
+    //列
+    ArrayList<Boolean> col = new ArrayList<>();
+    //对角线y=-x
+    ArrayList<Boolean> mYeqX = new ArrayList<>();
+    //反对角线y=x
+    ArrayList<Boolean> YeqX = new ArrayList<>();
+    List<String> path = new ArrayList<>();
+
+    public List<List<String>> solveNQueens(int n) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < n; i++) sb.append('.');
+        String dotLine = sb.toString();
+        for(int i = 0; i < 2 * n; i++){
+            if(i % 2 == 0) {
+                col.add(false);
+                path.add(dotLine);
+            }
+            mYeqX.add(false);
+            YeqX.add(false);
+        }
+        helper(0, n);
+        return res;
+    }
+
+    public void helper(int r, int n) {
+        if (r == n) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        for (int c = 0; c < n; c++) {
+            if (col.get(c) || YeqX.get(c - r + n) || mYeqX.get(c + r)) continue;
+            col.set(c, true); YeqX.set(c - r + n, true); mYeqX.set(c + r, true);
+            StringBuilder sb = new StringBuilder(path.get(r));
+            sb.setCharAt(c, 'Q');
+            path.set(r, sb.toString());
+            helper(r + 1, n);
+            sb = new StringBuilder(path.get(r));
+            sb.setCharAt(c, '.');
+            path.set(r, sb.toString());
+            col.set(c, false); YeqX.set(c - r + n, false); mYeqX.set(c + r, false);
+        }
+    }
+}
