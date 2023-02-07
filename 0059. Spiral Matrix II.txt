@@ -1,0 +1,44 @@
+class Solution {
+    public int[] dr = new int[]{0, 1, 0, -1};
+    public int[] dc = new int[]{1, 0, -1, 0};
+
+    public int[][] generateMatrix(int n) {
+        int[][] maze = new int[n][n];
+        for(int[] i : maze) Arrays.fill(i, 0);
+        Queue<Integer> qu = new LinkedList<>();
+        if(n % 2 == 1){
+            int start = n - 1;
+            for(int i = start; i >= 2; i -=2){
+                for(int j = 0; j < 4; j++)
+                    qu.add(i);
+            }
+            qu.add(1);
+        }
+        else{
+            int start = n - 1;
+            for(int i = start; i >= 1; i -=2){
+                for(int j = 0; j < 4; j++)
+                    qu.add(i);
+            }
+        }
+        helper(maze, 0, 0, 0, 1, n * n, qu);
+        return maze;
+    }
+
+    public void helper(int[][] maze, int dir, int r, int c, int now, int square, Queue<Integer> qu ){
+        int top = qu.poll();
+        for(int i = 0; i < top; i++){
+            maze[r][c] = now;
+            now ++;
+            r += dr[dir];
+            c += dc[dir];
+        }
+        if(qu.isEmpty()) return;
+        if(maze[r][c] != 0){
+            r++;
+            c++;
+        }
+        dir = (dir + 1 == 4 ? 0 : dir + 1);
+        helper(maze, dir, r, c, now, square, qu);
+    }
+}
