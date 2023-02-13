@@ -1,0 +1,20 @@
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        int[] minStep = new int[n];
+        minStep[0] = 0;
+        for(int i = 0; i < n; i++){
+            int stepLen = nums[i];
+            int nowStep = minStep[i] + 1;
+            for(int j = 1; j <= stepLen && i + j < n; j++){
+                if(minStep[i + j] == 0){
+                    minStep[i + j] = nowStep;
+                }
+                else{
+                    minStep[i + j] = Math.min(minStep[i + j], nowStep);
+                }
+            }
+        }
+        return minStep[n - 1];
+    }
+}
