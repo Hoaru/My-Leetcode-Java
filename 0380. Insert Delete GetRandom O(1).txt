@@ -1,0 +1,27 @@
+class RandomizedSet {
+
+    HashSet<Integer> set;
+
+    public RandomizedSet() {
+        set = new HashSet<>();
+    }
+    
+    public boolean insert(int val) {
+        if(set.contains(val)) return false;
+        set.add(val);
+        return true;
+    }
+    
+    public boolean remove(int val) {
+        if(!set.contains(val)) return false;
+        set.remove(val);
+        return true;
+    }
+    
+    public int getRandom() {
+        Random random = new Random();
+        Integer[] arr = set.toArray(new Integer[set.size()]);
+        int randomInt = random.nextInt(set.size());
+        return arr[randomInt];
+    }
+}
