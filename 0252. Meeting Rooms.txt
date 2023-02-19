@@ -1,0 +1,21 @@
+class Solution {
+    public boolean canAttendMeetings(int[][] intervals) {
+        int len = intervals.length;
+        if(len <= 1) return true;
+        else{
+            Arrays.sort(intervals, (int[] a, int[] b) -> a[0] - b[0]);
+            PriorityQueue<Integer> pqMin = new PriorityQueue<>();
+            pqMin.add(intervals[0][1]);
+            for(int i = 1; i < len; i++){
+                if(intervals[i][0] < pqMin.peek()){
+                    return false;
+                }
+                else{
+                    pqMin.poll();
+                    pqMin.add(intervals[i][1]);
+                }
+            }
+            return true;
+        }
+    }
+}

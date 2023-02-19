@@ -1,0 +1,24 @@
+class Solution {
+    public int lastStoneWeight(int[] stones) {
+        int len = stones.length;
+        if(len == 0) return 0;
+        else if(len == 1) return stones[0];
+        else{
+            PriorityQueue<Integer> pqMax = new PriorityQueue<>((a, b) -> b - a);
+            for(int i = 0; i < len; i++){
+                pqMax.add(stones[i]);
+            }
+            while(pqMax.size() >= 2){
+                int fir = pqMax.poll();
+                int sec = pqMax.poll();
+                if(fir > sec){
+                    pqMax.add(fir - sec);
+                }
+            }
+            if(pqMax.size() == 1){
+                return pqMax.poll();
+            }
+            else return 0;
+        }
+    }
+}
