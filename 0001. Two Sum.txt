@@ -1,50 +1,17 @@
-package leetcode.demo;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
-
-public class Solution {
-    public static int[] twoSum(int[] nums, int target) {
-        int[] indexs = new int[2];
-
-        // 建立k-v ，一一对应的哈希表
-        HashMap<Integer,Integer> hash = new HashMap<Integer,Integer>();
-        int len = nums.length;
-        for(int i = 0; i < len; i++){
-            if(hash.containsKey(nums[i])){
-                indexs[0] = i;
-                indexs[1] = hash.get(nums[i]);
-                return indexs;
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] res = new int[2];
+        for(int i = 0; i < nums.length; i++){
+            if(map.containsKey(nums[i])){
+                res[0] = map.get(nums[i]);
+                res[1] = i;
+                return res;
             }
-            // 将数据存入 key为补数 ，value为下标
-            hash.put(target-nums[i],i);
+            else{
+                map.put(target - nums[i], i);
+            }
         }
-
-        // // 双重循环 循环极限为(n^2-n)/2
-        // for(int i = 0; i < nums.length; i++){
-        //     for(int j = nums.length - 1; j > i; j --){
-        //         if(nums[i]+nums[j] == target){
-        //            indexs[0] = i;
-        //            indexs[1] = j;
-        //            return indexs;
-        //         }
-        //     }
-        // }
-        return indexs;
-    }
-
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        String input = sc.nextLine();
-        String[] string_input = input.split("\\s+");
-        int len_input = string_input.length;
-        int[] int_input = new int[len_input];
-        for(int i = 0; i < len_input; i++){
-            int_input[i] = Integer.parseInt(string_input[i]);
-        }
-        input = sc.nextLine();
-        int target = Integer.parseInt(input);
-        int[] index = twoSum(int_input, target);
-        System.out.println(Arrays.toString(index));
+        return res;
     }
 }
