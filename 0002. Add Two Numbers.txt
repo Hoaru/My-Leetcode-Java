@@ -1,37 +1,38 @@
-
 class Solution {
-    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int add1 = 0;
-        int sum = 0;
-        int flag1 = 1;
-        int flag2 = 1;
-        ListNode l = new ListNode();
-        ListNode curr = l;
-        ListNode n1 = l1;
-        ListNode n2 = l2;
-        while(flag1 == 1 || flag2 == 1 || add1 == 1){
-            sum += add1;
-            if(flag1 == 1){
-                sum += n1.val;
-                n1 = n1.next;
-                if(n1 == null) flag1 = 0;
-                else flag1 = 1;
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode(-1);
+        ListNode root = res;
+        int add = 0;
+        while(l1 != null || l2 != null){
+            ListNode newNode = new ListNode(0);
+            if(l1 == null){
+                int val = l2.val + add;
+                add = val >= 10 ? 1 : 0;
+                val = val >= 10 ? val - 10 : val;
+                newNode.val = val;
+                l2 = l2.next;
             }
-            if(flag2 == 1){
-                sum += n2.val;
-                n2 = n2.next;
-                if(n2 == null) flag2 = 0;
-                else flag2 = 1;
+            else if(l2 == null){
+                int val = l1.val + add;
+                add = val >= 10 ? 1 : 0;
+                val = val >= 10 ? val - 10 : val;
+                newNode.val = val;
+                l1 = l1.next;
             }
-            curr.val = sum % 10;
-            if(sum/10 == 1) add1 = 1;
-            else add1 = 0;
-            sum = 0;
-            if(flag1 == 1 || flag2 == 1 || add1 == 1){
-                curr.next = new ListNode();
-                curr = curr.next;
+            else{
+                int val = l1.val + l2.val + add;
+                add = val >= 10 ? 1 : 0;
+                val = val >= 10 ? val - 10 : val;
+                newNode.val = val;
+                l1 = l1.next;
+                l2 = l2.next;
             }
+            root.next = newNode;
+            root = root.next;
         }
-        return l;
+        if(add == 1){
+            root.next = new ListNode(1);
+        }
+        return res.next;
     }
 }
