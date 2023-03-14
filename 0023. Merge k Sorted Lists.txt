@@ -1,31 +1,31 @@
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        ListNode root = new ListNode(0);
-        ListNode curr = root;
-        LinkedList<ListNode> qu = new LinkedList<>();
-        for(ListNode i: lists){
+        ListNode head = new ListNode(0);
+        ListNode now = head;
+        ArrayList<ListNode> arr = new ArrayList<>();
+        for(ListNode i : lists){
             if(i != null)
-                qu.add(i);
+                arr.add(i);
         }
-        while(!qu.isEmpty()){
-            ListNode minNode = qu.poll();
-            int min = minNode.val;
-            LinkedList<ListNode> newQu = new LinkedList<>();
-            while(!qu.isEmpty()){
-                ListNode top = qu.poll();
-                if(top.val < min){
-                    newQu.add(minNode);
-                    min = top.val;
-                    minNode = top;
+        if(arr.size() == 0) return null;
+
+        int minIndex;
+        int minVal;
+        while(!arr.isEmpty()){
+            minIndex = 0;
+            minVal = arr.get(minIndex).val;
+            for(int i = 1; i < arr.size(); i++){
+                ListNode curr = arr.get(i);
+                if(curr.val < minVal){
+                    minVal = curr.val;
+                    minIndex = i;
                 }
-                else newQu.add(top);
             }
-            curr.next = minNode;
-            curr = curr.next;
-            if(minNode.next != null)
-                newQu.add(minNode.next);
-            qu = newQu;  
+            now.next = arr.get(minIndex);
+            now = now.next; 
+            if(arr.get(minIndex).next == null) arr.remove(minIndex);
+            else arr.set(minIndex, arr.get(minIndex).next);
         }
-        return root.next;
+        return head.next;
     }
 }
